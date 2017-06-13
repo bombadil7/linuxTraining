@@ -327,7 +327,7 @@ Rebase interactive (`rebase -i`) can be used to combine several commits into one
 tutorial [here](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html "tutorial").
 _It should only be done when noone else has pulled pulled the old commits from the repo!_
 - Say you have several minor commits like this:
-![Log1](/home/bombadil/work/linuxTraining/screenshots/gitLog1.png)
+![Log1](/home/bombadil/work/linuxTraining/screenshots/gitLog1.png "Log Before")
 
 - To combine four commits into one we could run:
 ```
@@ -342,7 +342,7 @@ _Make sure that vim is configured as the git editor, otherwise it'll tell you it
 combined commit.  Change, save and close.
 - If the commits you squashed were already pushed to the repo (but you're sure noone pulled!)
 you need to merge them:
-![Log2](/home/bombadil/work/linuxTraining/screenshots/gitLog2.png)
+![Log2](/home/bombadil/work/linuxTraining/screenshots/gitLog2.png "Log with Conflict")
 
 ```
 $ git pull
@@ -355,7 +355,7 @@ $ git add lin_commands_notes.md
 $ git commit -m "Resolve conflict with github"
 [master b2bf5ab] Resolve conflict with github
 ```
-![Log2](/home/bombadil/work/linuxTraining/screenshots/gitLog2.png)
+![Log2](/home/bombadil/work/linuxTraining/screenshots/gitLog2.png "Final Log")
 
 ```
 $ git push origin master
