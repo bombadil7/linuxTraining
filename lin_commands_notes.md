@@ -146,11 +146,12 @@ tar -czvf test.tgz --exclude=work/intrinsyc/ ~/work     !!! trailing / after int
 tar -czvf test.tgz --exclude=~/work/intrinsyc ~/work    !!! ~/ before work
 ```
 
-Use --exclude-from=<files2exclude>    or  -X <files2exclude>
-Here <files2exclude> is a text file containing patterns:
+Use `--exclude-from=<files2exclude>`    or  `-X <files2exclude>`
+Here `<files2exclude>` is a text file containing patterns:
 intrinsyc
 
 Good example:
+```
 $ for i in 0 1 2; do mkdir -p /tmp/data/sub$i; echo foo > /tmp/data/sub$i/foo; done
 $ find /tmp/data
 /tmp/data
@@ -165,15 +166,15 @@ tar: Removing leading `/' from member names
 /tmp/data/
 /tmp/data/sub0/
 /tmp/data/sub0/foo
-
-Zip Archives:
+```
+## Zip Archives
     ~> zip -r archive.zip <files>   # create
     ~> unzip -t archive.zip         # test / list
     ~> unzip archive.zip            # extract
 
 Look into rsync (remote sync)!!!
 
-VIM:
+## VIM
 Run shell command from inside VIM:
     :!{cmd}
 
