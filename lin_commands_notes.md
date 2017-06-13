@@ -308,10 +308,10 @@ Dynamic libraries can be found in `/usr/lib/x86_64-linux-gnu`
 
 Look at:
 ```
-    /usr/lib/x86.../libGLU.a
-                    libGLU.so
-                    libglut.so
-                    libGL.so
+/usr/lib/x86.../libGLU.a
+                libGLU.so
+                libglut.so
+                libGL.so
 ```
 Compiling and linking can be done this way when `#including <GL/gl.h>` and `<SDL2/SDL.h>`:
 
@@ -323,8 +323,7 @@ Compiling and linking can be done this way when `#including <GL/gl.h>` and `<SDL
 ## GIT 
 
 ### Merge Commits (Squash)
-Rebase interactive (`rebase -i`) can be used to combine several commits into one. Check out 
-[a rebase -i Tutorial here] (http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html).
+Rebase interactive (`rebase -i`) can be used to combine several commits into one. Check out [here](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html "tutorial").
 _It should only be done when noone else has pulled pulled the old commits from the repo!_
 - To combine four commits into one we could run:
 ```
@@ -332,48 +331,51 @@ _It should only be done when noone else has pulled pulled the old commits from t
 ```
 - This will open vim window asking to select which commits to squash and which to pick.
 _Make sure that vim is configured as the git editor, otherwise it'll tell you it can't save!_:
-`$ git config --global core.editor "gvim -f"`
+```
+    $ git config --global core.editor "gvim -f"
+```
 - Now it will open another vim window asking if you want to change the message for this 
 combined commit.  Change, save and close.
 - If the commits you squashed were already pushed to the repo (but you're sure noone pulled!)
 you need to merge them:
 ```
-    $ git lg2
-    * 496610d - Tue, 13 Jun 2017 09:29:27 -0700 (2 hours ago) (HEAD -> master)
-    |           Formatting cleanup and rebase - Andrei Kniazev
-    | * 50c7700 - Tue, 13 Jun 2017 10:53:05 -0700 (49 minutes ago) (origin/master)
-    | |           Cleaned up formatting - Andrei Kniazev
-    | * 2ba6562 - Tue, 13 Jun 2017 10:27:56 -0700 (74 minutes ago)
-    | |           Cleaned up formatting - Andrei Kniazev
-    | * 5dea305 - Tue, 13 Jun 2017 09:29:27 -0700 (2 hours ago)
-    |/            A few more changes to linux_commands_notes.md - Andrei Kniazev
-    * 03ea5d9 - Mon, 12 Jun 2017 18:11:34 -0700 (18 hours ago)
-    Initial commit, my first markdown - Andrei Kniazev
+_$ git lg2_
+* 496610d - Tue, 13 Jun 2017 09:29:27 -0700 (2 hours ago) (HEAD -> master)
+|           Formatting cleanup and rebase - Andrei Kniazev
+| * 50c7700 - Tue, 13 Jun 2017 10:53:05 -0700 (49 minutes ago) (origin/master)
+| |           Cleaned up formatting - Andrei Kniazev
+| * 2ba6562 - Tue, 13 Jun 2017 10:27:56 -0700 (74 minutes ago)
+| |           Cleaned up formatting - Andrei Kniazev
+| * 5dea305 - Tue, 13 Jun 2017 09:29:27 -0700 (2 hours ago)
+|/            A few more changes to linux_commands_notes.md - Andrei Kniazev
+* 03ea5d9 - Mon, 12 Jun 2017 18:11:34 -0700 (18 hours ago)
+Initial commit, my first markdown - Andrei Kniazev
 
-    $ git pull
-    Auto-merging lin_commands_notes.md
-    CONFLICT (content): Merge conflict in lin_commands_notes.md
-    Automatic merge failed; fix conflicts and then commit the result.
+_$ git pull_
+Auto-merging lin_commands_notes.md
+CONFLICT (content): Merge conflict in lin_commands_notes.md
+Automatic merge failed; fix conflicts and then commit the result.
 
-    $ gvim lin_commands_notes.md 
-    $ git add lin_commands_notes.md 
-    $ git commit -m "Resolve conflict with github"
-    [master b2bf5ab] Resolve conflict with github
-    $ git lg2
-    *   b2bf5ab - Tue, 13 Jun 2017 12:13:28 -0700 (21 seconds ago) (HEAD -> master)
-    |\            Resolve conflict with github - Andrei Kniazev
-    | * 50c7700 - Tue, 13 Jun 2017 10:53:05 -0700 (81 minutes ago) (origin/master)
-    | |           Cleaned up formatting - Andrei Kniazev
-    | * 2ba6562 - Tue, 13 Jun 2017 10:27:56 -0700 (2 hours ago)
-    | |           Cleaned up formatting - Andrei Kniazev
-    | * 5dea305 - Tue, 13 Jun 2017 09:29:27 -0700 (3 hours ago)
-    | |           A few more changes to linux_commands_notes.md - Andrei Kniazev
-    * | 496610d - Tue, 13 Jun 2017 09:29:27 -0700 (3 hours ago)
-    |/            Formatting cleanup and rebase - Andrei Kniazev
-    * 03ea5d9 - Mon, 12 Jun 2017 18:11:34 -0700 (18 hours ago)
-    Initial commit, my first markdown - Andrei Kniazev
+_$ gvim lin_commands_notes.md_
+_$ git add lin_commands_notes.md_
+_$ git commit -m "Resolve conflict with github"_
+[master b2bf5ab] Resolve conflict with github
 
-    $ git push origin master
+_$ git lg2_
+*   b2bf5ab - Tue, 13 Jun 2017 12:13:28 -0700 (21 seconds ago) (HEAD -> master)
+|\            Resolve conflict with github - Andrei Kniazev
+| * 50c7700 - Tue, 13 Jun 2017 10:53:05 -0700 (81 minutes ago) (origin/master)
+| |           Cleaned up formatting - Andrei Kniazev
+| * 2ba6562 - Tue, 13 Jun 2017 10:27:56 -0700 (2 hours ago)
+| |           Cleaned up formatting - Andrei Kniazev
+| * 5dea305 - Tue, 13 Jun 2017 09:29:27 -0700 (3 hours ago)
+| |           A few more changes to linux_commands_notes.md - Andrei Kniazev
+* | 496610d - Tue, 13 Jun 2017 09:29:27 -0700 (3 hours ago)
+|/            Formatting cleanup and rebase - Andrei Kniazev
+* 03ea5d9 - Mon, 12 Jun 2017 18:11:34 -0700 (18 hours ago)
+Initial commit, my first markdown - Andrei Kniazev
+
+_$ git push origin master_
 ```
 
 
