@@ -238,7 +238,6 @@ examples:
 #### View installed packages:
     $ apt list --installed | grep -i mesa
 
-
 Compressor | Job Time | Time with System Waiting
 -----------|----------|-------------------------
 gz: |     2.412s |    74,155,976
@@ -300,16 +299,10 @@ Also can use `dos2unix -n fileName newFileName`
 
 
 ## Linux Libraries
-
 Headers are located in `/usr/include`
-
-
-
 Check out `/usr/include/SDL2`,  `/usr/include/GL`
 
 Dynamic libraries can be found in `/usr/lib/x86_64-linux-gnu`
-
-
  - *.a corresponds to archive libraries, which are statically linked with -c flag
  - *.so extensions indicate shared object libraries, which are linked dynamically
 
