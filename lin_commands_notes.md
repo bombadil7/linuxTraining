@@ -323,8 +323,23 @@ Compiling and linking can be done this way when `#including <GL/gl.h>` and `<SDL
 ## GIT 
 
 ### Merge Commits (Squash)
-Rebase interactive (`rebase -i`) can be used to combine several commits into one. Check out [here](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html "tutorial").
+Rebase interactive (`rebase -i`) can be used to combine several commits into one. Check out a 
+tutorial [here](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html "tutorial").
 _It should only be done when noone else has pulled pulled the old commits from the repo!_
+- Say you have several minor commits like this:
+```
+~> git lg2
+* 19bb229 - Tue, 13 Jun 2017 11:29:08 -0700 (4 minutes ago) (HEAD -> master)
+|           Latest changes - Andrei Kniazev
+* 50c7700 - Tue, 13 Jun 2017 10:53:05 -0700 (40 minutes ago) (origin/master)
+|           Cleaned up formatting - Andrei Kniazev
+* 2ba6562 - Tue, 13 Jun 2017 10:27:56 -0700 (65 minutes ago)
+|           Cleaned up formatting - Andrei Kniazev
+* 5dea305 - Tue, 13 Jun 2017 09:29:27 -0700 (2 hours ago)
+|           A few more changes to linux_commands_notes.md - Andrei Kniazev
+* 03ea5d9 - Mon, 12 Jun 2017 18:11:34 -0700 (17 hours ago)
+            Initial commit, my first markdown - Andrei Kniazev
+```
 - To combine four commits into one we could run:
 ```
     $ git rebase -i HEAD~4
@@ -339,7 +354,7 @@ combined commit.  Change, save and close.
 - If the commits you squashed were already pushed to the repo (but you're sure noone pulled!)
 you need to merge them:
 ```
-_$ git lg2_
+$ git lg2
 * 496610d - Tue, 13 Jun 2017 09:29:27 -0700 (2 hours ago) (HEAD -> master)
 |           Formatting cleanup and rebase - Andrei Kniazev
 | * 50c7700 - Tue, 13 Jun 2017 10:53:05 -0700 (49 minutes ago) (origin/master)
@@ -351,17 +366,17 @@ _$ git lg2_
 * 03ea5d9 - Mon, 12 Jun 2017 18:11:34 -0700 (18 hours ago)
 Initial commit, my first markdown - Andrei Kniazev
 
-_$ git pull_
+$ git pull
 Auto-merging lin_commands_notes.md
 CONFLICT (content): Merge conflict in lin_commands_notes.md
 Automatic merge failed; fix conflicts and then commit the result.
 
-_$ gvim lin_commands_notes.md_
-_$ git add lin_commands_notes.md_
-_$ git commit -m "Resolve conflict with github"_
+$ gvim lin_commands_notes.md
+$ git add lin_commands_notes.md
+$ git commit -m "Resolve conflict with github"
 [master b2bf5ab] Resolve conflict with github
 
-_$ git lg2_
+$ git lg2
 *   b2bf5ab - Tue, 13 Jun 2017 12:13:28 -0700 (21 seconds ago) (HEAD -> master)
 |\            Resolve conflict with github - Andrei Kniazev
 | * 50c7700 - Tue, 13 Jun 2017 10:53:05 -0700 (81 minutes ago) (origin/master)
@@ -375,7 +390,7 @@ _$ git lg2_
 * 03ea5d9 - Mon, 12 Jun 2017 18:11:34 -0700 (18 hours ago)
 Initial commit, my first markdown - Andrei Kniazev
 
-_$ git push origin master_
+$ git push origin master
 ```
 
 
