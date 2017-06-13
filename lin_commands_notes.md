@@ -11,14 +11,15 @@ even possible) to recall some information you once came across.
 Double quotes expand the variables, single quotes do not
 
 Back tick allows inserting command inside a command:
+```
     $ cd /lib/modules/`uname -r`;pwd
         /lib/modules/4.10.0-21-generic
+```
 
 
-
-//***********************************************************************//
-### History:
+### History
 Search history for previous command:
+```
     [Ctrl][r]  -  similar to [Ctrl][a] and [Ctrl][e] for beginning / end of line
         Enter will execute the command and Esc will add it to the command line rdy for editing.
 
@@ -29,79 +30,96 @@ Search history for previous command:
     $ !cat     # recall latest command matching a starting string
     $ !?search?    # search for a command that contains "search", but doesnt'
         start with it.  i.e. : "apt-cache search"
-
+```
 Make substitutions on the latest command:
-    $ ^more^less
+    `$ ^more^less`
 
 Run another command with the same arguments:
-    $ more !*
+    `$ more !*`
 
 Run another command with just the last one of the arguments:
+```
     $ chmod 766 ~/bin/extractTARs  # original command
     $ ls !$:h
-
+```
 Can use word designator (:) to select arguments from prev. command:
+```
     $ ls /usr/share/doc/manpages
     $ cd !!:1
+```
 In case where we are operating on the last command, can drop second ! and colon:
-    $ cd !1
+    `$ cd !1`
 
 First argument can be refered to as "^" and last as "$".
 Ranges can be expressed as (prev command with all args):
+```
     $ !!:1*
     $ !!:1-$
     $ !!:*
+```
 
 Similarly, can use a number followed by "" to mean everything after specific word should 
 be included.
 
-"head" (h) can be used to select path leading up to the file (up to the final slash):
+ - "head" (h) can be used to select path leading up to the file (up to the final slash):
+```
     $ cat /usr/share/doc/manpages/copyright
     $ cd !!:$:h
     $ pwd
-"tail" is designated by "t":
-    $ less !cat:$:t
-"r" strips the trailing extension:
+```
+ - "tail" is designated by "t":
+    `$ less !cat:$:t`
+ - "r" strips the trailing extension:
+```
     $ tar xzvf long-project-name.tgz
     $ cd !!:$:r
+```
 or do it twice:
+```
     $ tar xzvf long-project-name.tar.gz
     $ cd !!:$:r:r
-"e" removes everything except the trailing extension
-"p" echos the command instead of executing it (good for checking if substitution is correct):
+```
+ - "e" removes everything except the trailing extension
+ - "p" echos the command instead of executing it (good for checking if substitution is correct):
+```
     $ find ~ -name "file1" # original command
     $ !119:0:p / !119:2*:p
     $ find / -name "file1" 
+```
 It also puts this modified command into history:
-    [CTRL][p]
+   `[CTRL][p]`
 
 Easier substitutions could be done with s/original/new/ syntax:
+```
     $ !119:s/~/\//     # substitute first instance, or:
     $ !119:s/~/\//g    # substitute in all occurances
-
+```
 To expand a command from history and see what was actually executed use Esc and then CTRL-e:
+```
     $ !!   # press Esc, followed by CTRL-e and you get:
     find / -name "swapfile"
+```
 
 Move through history:
-    [Ctrl][p] - previous
-    [Ctrl][n] - next
+ -  [Ctrl][p] - previous
+ -  [Ctrl][n] - next
 
 Move to the previous folder:
-    $ cd -
+    `$ cd -`
 
 Recalling previous command after you already started typing it:
-    $ cmd
-    CTRL-a
-    CTRL-r
-    CTRL-y
-    CTRL-r
-    or symply: CTRL-aryr
+ -  $ cmd
+ -  CTRL-a
+ -  CTRL-r
+ -  CTRL-y
+ -  CTRL-r
+ -  or symply: CTRL-aryr
 
 Another command for executing commands from history:
+```
     fc -2 0     # Execute last two commands.  It will open those commands in vi for editing
                 # and execute them when you exit
-
+```
 
 Alternative editors: nedit, gedit
 
@@ -181,7 +199,7 @@ Run shell command from inside VIM:
     :silent !{cmd} Eliminates the need to hit enter after the command is done
     :r !{cmd} Puts the output of $cmd into the current buffer
 
-Dot character *(`.`)* means "perform last command again", so to comment out several lines in Bash
+Dot character (_`.`_) means "perform last command again", so to comment out several lines in Bash
 script you would comment out one, and then go `j.j.j.j.`  
 
 can use a marker for the first line: `ma`     "where a is any letter
@@ -283,8 +301,8 @@ Check out `/usr/include/SDL2`,  `/usr/include/GL`
 Dynamic libraries can be found in `/usr/lib/x86_64-linux-gnu`
 
 
-*.a corresponds to archive libraries, which are statically linked with -c flag
-*.so extensions indicate shared object libraries, which are linked dynamically
+ - *.a corresponds to archive libraries, which are statically linked with -c flag
+ - *.so extensions indicate shared object libraries, which are linked dynamically
 
 Look at:
     /usr/lib/x86.../libGLU.a
