@@ -183,21 +183,23 @@ intrinsyc
     /tmp/data/sub0/foo
 
 ## Zip Archives
+```
     $ zip -r archive.zip <files>   # create
     $ unzip -t archive.zip         # test / list
     $ unzip archive.zip            # extract
-
+```
 Look into rsync (remote sync)!!!
 
 ## VIM
 Run shell command from inside VIM:
-    :!{cmd}
+```
+:!{cmd}
 
-    :! By itself, runs the last external command (from your shell history)
-    :!! Repeats the last command
-    :silent !{cmd} Eliminates the need to hit enter after the command is done
-    :r !{cmd} Puts the output of $cmd into the current buffer
-
+:! By itself, runs the last external command (from your shell history)
+:!! Repeats the last command
+:silent !{cmd} Eliminates the need to hit enter after the command is done
+:r !{cmd} Puts the output of $cmd into the current buffer
+```
 Dot character (_`.`_) means "perform last command again", so to comment out several lines in Bash
 script you would comment out one, and then go `j.j.j.j.`  
 
@@ -205,6 +207,17 @@ can use a marker for the first line: `ma`     "where a is any letter
 then move to the last line and run:  `:'a,. s/^/#/`
 This works just like running `s/^/#/` on a visual selection. Here `'a` designates
 the mark and `.` designates current line, separated by a comma (,).
+
+### Change font from inside the window
+Check what font is being used first:
+```
+:set guifont?
+guifont=Monospace 8
+```
+Then set it, but make sure to include the slash \
+```
+:set guifont=Monospace\ 7.5
+```
 
 ## Bashrc Mods
 Assigned (,"), (,//), (,#) and (,;) to create comments (pick one depending on your
@@ -246,13 +259,17 @@ xz: |    25.109s |    68,475,888
 lzma: |  25.752s |    68.475,888 
 
 To search for files with certain permission:
+```
     $ find /path/to/file -user user1 -perm -u+rwx
-
+```
 Or using grep to extract all files with superuser bit set:
+```
     $ ls /usr/bin | grep '^...s'
-
+```
 We can use this grep filter to print only the file names:
+```
     $ ls /usr/bin | grep '^...s' | awk '{ print $9 }'
+```
 
 #### Makefiles  
 Each variable in the Makefile can be overridden from command line.  When SRCS
@@ -261,15 +278,19 @@ To fix missing dependencies issue run:
 apt --fix-broken install
 
 #### Configure git to properly handle line endings (avoid ^M endings):
+```
     $ git config --global core.autocrlf input
+```
 
 #### Error installing gvim after building it from source:
+```
     $ sudo checkinstall
     dpkg: error processing archive /blah/blah/vim_ddd.dev
     trying to overwrite '/usr/bin/xxd'
     dpkg-dev: error: subprocess paste was killed by signal (Broken pipe)
     Errors were encountered while processing:
     /home/bombadil/tmp/vim/vim_20170611-1_amd64.deb
+```
 
 #### Fix it with this command:
     `$ sudo dpkg -i --force-overwrite /home/bombadil/tmp/vim/vim_20170611-1_amd64.deb`
@@ -289,6 +310,8 @@ Also can use `dos2unix -n fileName newFileName`
 ## Apt Commands
  - Search for a package: 
  `apt-cache search mesa | grep OpenGL`
+ - View detailed package info:
+`apt-cache show [package name]`
  - Get info on OpenGL version:
  `glxinfo | grep "version"`
  - View version info of any package:
@@ -308,17 +331,18 @@ Dynamic libraries can be found in `/usr/lib/x86_64-linux-gnu`
 
 Look at:
 ```
-/usr/lib/x86.../libGLU.a
-                libGLU.so
-                libglut.so
-                libGL.so
+    /usr/lib/x86.../libGLU.a
+                    libGLU.so
+                    libglut.so
+                    libGL.so
 ```
 Compiling and linking can be done this way when `#including <GL/gl.h>` and `<SDL2/SDL.h>`:
-
+```
     $ gcc -Wall -Wextra -pedantic -c sdlGL.c -o sdlGL.o
     $ gcc sdlGL.o -o sdlGLtest1 `sdl-config --libs --cflags` -lm -lGL -lSDL2
     $ ls
     sdlGL.c  sdlGL.o  sdlGLtest1
+```
 
 ## GIT 
 
@@ -327,7 +351,8 @@ Rebase interactive (`rebase -i`) can be used to combine several commits into one
 tutorial [here](http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html "tutorial").
 _It should only be done when noone else has pulled pulled the old commits from the repo!_
 - Say you have several minor commits like this:
-![Log1](/home/bombadil/work/linuxTraining/screenshots/gitLog1.png "Log Before")
+
+![Log1](./screenshots/gitLog1.png "Log Before")
 
 - To combine four commits into one we could run:
 ```
@@ -342,22 +367,36 @@ _Make sure that vim is configured as the git editor, otherwise it'll tell you it
 combined commit.  Change, save and close.
 - If the commits you squashed were already pushed to the repo (but you're sure noone pulled!)
 you need to merge them:
-![Log2](/home/bombadil/work/linuxTraining/screenshots/gitLog2.png "Log with Conflict")
+
+![Log2](./screenshots/gitLog2.png "Log with Conflict")
+
 
 ```
-$ git pull
-Auto-merging lin_commands_notes.md
-CONFLICT (content): Merge conflict in lin_commands_notes.md
-Automatic merge failed; fix conflicts and then commit the result.
+    $ git pull
+    Auto-merging lin_commands_notes.md
+    CONFLICT (content): Merge conflict in lin_commands_notes.md
+    Automatic merge failed; fix conflicts and then commit the result.
 
-$ gvim lin_commands_notes.md
-$ git add lin_commands_notes.md
-$ git commit -m "Resolve conflict with github"
-[master b2bf5ab] Resolve conflict with github
+    $ gvim lin_commands_notes.md
+    $ git add lin_commands_notes.md
+    $ git commit -m "Resolve conflict with github"
+    [master b2bf5ab] Resolve conflict with github
 ```
-![Log2](/home/bombadil/work/linuxTraining/screenshots/gitLog2.png "Final Log")
+![Log3](./screenshots/gitLog3.png "Final Log")
 
 ```
-$ git push origin master
+    $ git push origin master
+```
+
+## Markdown .md
+A very nice page for it [markdownConverters](https://kevin.deldycke.com/2012/01/how-to-generate-pdf-markdown/ "here")
+- pandoc - easy, light, intuitive.  Requires additional package (texlive) to print to pdf
+```
+    $ pandoc README.md -o readme-pandoc.pdf
+```
+- gimli - written in ruby.  relies on wkhtmltopdf.  
+``` 
+    $ sudo gem install gimli
+    $ gimli -f README.md
 ```
 
