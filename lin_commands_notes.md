@@ -195,7 +195,7 @@ Run shell command from inside VIM:
 ```
 :!{cmd}
 
-:! By itself, runs the last external command (from your shell history)
+:! By itself runs the last external command (from your shell history)
 :!! Repeats the last command
 :silent !{cmd} Eliminates the need to hit enter after the command is done
 :r !{cmd} Puts the output of $cmd into the current buffer
@@ -251,6 +251,17 @@ examples:
 #### View installed packages:
     $ apt list --installed | grep -i mesa
 
+#### Apt fix missing dependencies
+```
+apt --fix-broken install
+``` 
+
+#### Deb package install
+```
+~> dpkg -i /path/to/deb/file
+~> sudo apt-get install -f
+```
+
 Compressor | Job Time | Time with System Waiting
 -----------|----------|-------------------------
 gz: |     2.412s |    74,155,976
@@ -274,10 +285,7 @@ We can use this grep filter to print only the file names:
 #### Makefiles  
 Each variable in the Makefile can be overridden from command line.  When SRCS
 
-To fix missing dependencies issue run:
-apt --fix-broken install
-
-#### Configure git to properly handle line endings (avoid ^M endings):
+#### Git configure to properly handle line endings (avoid ^M endings):
 ```
     $ git config --global core.autocrlf input
 ```
@@ -400,3 +408,10 @@ A very nice page for it [markdownConverters](https://kevin.deldycke.com/2012/01/
     $ gimli -f README.md
 ```
 
+## Xargs
+
+Search directory to find all the files pertaining to am335x, filter out only soutces, dts, but not
+.dtsi, and grep through those files for definition of &i2c1 bus ("" are needed because of &).
+```
+~> find . -name "am335x*" | grep dts$ | xargs grep "&i2c1"
+```

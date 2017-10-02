@@ -1,0 +1,246 @@
+<h1 id="linux-command-notes">LINUX COMMAND NOTES</h1>
+<h2 id="overview">Overview</h2>
+<p>This document covers variuos interesting points, specific commands and shortcuts, directory layout and file locations in Linux. The point of this document is make it easier (or even possible) to recall some information you once came across.</p>
+<h2 id="bash-highlights">Bash Highlights</h2>
+<p>Double quotes expand the variables, single quotes do not</p>
+<p>Back tick allows inserting command inside a command:</p>
+<pre><code>    $ cd /lib/modules/`uname -r`;pwd
+        /lib/modules/4.10.0-21-generic</code></pre>
+<h3 id="history">History</h3>
+<p>Search history for previous command: <code>[Ctrl][r]</code> - similar to <code>[Ctrl][a]</code> and <code>[Ctrl][e]</code> for beginning / end of line <code>Enter</code> will execute the command and <code>Esc</code> will add it to the command line rdy for editing.</p>
+<pre><code>    $ history
+    $ !!       # recalls latest command
+    $ !1003    # recall command by its number
+    $ !-2      # recall second to last command
+    $ !cat     # recall latest command matching a starting string
+    $ !?search?    # search for a command that contains &quot;search&quot;, but doesnt&#39;
+        start with it.  i.e. : &quot;apt-cache search&quot;</code></pre>
+<p>Make substitutions on the latest command: <code>$ ^more^less</code></p>
+<p>Run another command with the same arguments: <code>$ more !*</code></p>
+<p>Run another command with just the last one of the arguments:</p>
+<pre><code>    $ chmod 766 ~/bin/extractTARs  # original command
+    $ ls !$:h</code></pre>
+<p>Can use word designator (:) to select arguments from prev. command:</p>
+<pre><code>    $ ls /usr/share/doc/manpages
+    $ cd !!:1</code></pre>
+<p>In case where we are operating on the last command, can drop second ! and colon: <code>$ cd !1</code></p>
+<p>First argument can be refered to as &quot;^&quot; and last as &quot;$&quot;. Ranges can be expressed as (prev command with all args):</p>
+<pre><code>    $ !!:1*
+    $ !!:1-$
+    $ !!:*</code></pre>
+<p>Similarly, can use a number followed by &quot;&quot; to mean everything after specific word should be included.</p>
+<ul>
+<li><p>&quot;head&quot; (h) can be used to select path leading up to the file (up to the final slash):</p>
+<pre><code>$ cat /usr/share/doc/manpages/copyright
+$ cd !!:$:h
+$ pwd</code></pre></li>
+<li>&quot;tail&quot; is designated by &quot;t&quot;: <code>$ less !cat:$:t</code></li>
+<li><p>&quot;r&quot; strips the trailing extension:</p>
+<pre><code>$ tar xzvf long-project-name.tgz
+$ cd !!:$:r</code></pre>
+<p>or do it twice:</p>
+<pre><code>$ tar xzvf long-project-name.tar.gz
+$ cd !!:$:r:r</code></pre></li>
+<li>&quot;e&quot; removes everything except the trailing extension</li>
+<li><p>&quot;p&quot; echos the command instead of executing it (good for checking if substitution is correct):</p>
+<pre><code>$ find ~ -name &quot;file1&quot; # original command
+$ !119:0:p / !119:2*:p
+$ find / -name &quot;file1&quot; </code></pre>
+<p>It also puts this modified command into history: <code>[CTRL][p]</code></p></li>
+</ul>
+<p>Easier substitutions could be done with s/original/new/ syntax:</p>
+<pre><code>    $ !119:s/~/\//     # substitute first instance, or:
+    $ !119:s/~/\//g    # substitute in all occurances</code></pre>
+<p>To expand a command from history and see what was actually executed use Esc and then CTRL-e:</p>
+<pre><code>    $ !!   # press Esc, followed by CTRL-e and you get:
+    find / -name &quot;swapfile&quot;</code></pre>
+<p>Move through history: - [Ctrl][p] - previous - [Ctrl][n] - next</p>
+<p>Move to the previous folder: <code>$ cd -</code></p>
+<p>Recalling previous command after you already started typing it: - $ cmd - CTRL-a - CTRL-r - CTRL-y - CTRL-r - or symply: CTRL-aryr</p>
+<p>Another command for executing commands from history:</p>
+<pre><code>    fc -2 0     # Execute last two commands.  It will open those commands in vi for editing
+                # and execute them when you exit</code></pre>
+<p>Alternative editors: nedit, gedit</p>
+<h3 id="archiving">Archiving</h3>
+<ul>
+<li>z - gzip</li>
+<li>j - bzip2</li>
+<li>J - xz</li>
+<li>--lzma - lzma</li>
+<li>c - create</li>
+<li>t - test</li>
+<li>x - extract</li>
+</ul>
+<h4 id="examples">Examples:</h4>
+<pre><code>    $ tar jcvf archive.tar.bz2 dir
+    $ tar Jcvf archive.tar.xz dir
+    $ tar --lzma -cvf archive.tar.lzma
+    $ tar xvf archive.tar.[gz|bz2|lzma|xz]</code></pre>
+<h4 id="can-exclude-folders">Can exclude folders:</h4>
+<pre><code>    $ cd /folder_to_backup
+    $ tar czvf /backup/filename.tgz --exclude=folder/sub1 --exclude=folder/sub2 folder </code></pre>
+<p><strong>Note:</strong> <code>--exclude</code> statements <em>MUST</em> precede the source folder from which we want to exclude selected content. Excluded folders must not have <code>~/</code> (full path works) , just what's recognizable from the source folder (pattern). Folder name in the pattern can't have a trailing slash: <code>sys</code> not <code>sys/</code>. But <code>sys/*</code> would also work. #### Examples:</p>
+<pre><code>   $ tar -czvf test.tgz --exclude=work/intrinsyc work | tee testTar.log
+   $ tar -czvf test.tgz --exclude=work/intrinsyc ~/work 
+   $ tar -czvf test.tgz --exclude=/home/andrei/work/intrinsyc ~/work
+   $ tar -czvf test.tgz --exclude=intrinsyc ~/work       // no path, just the name of the folder
+   $ tar -czvf test.tgz --exclude=&#39;intrinsyc/*&#39; ~/work   // </code></pre>
+<h4 id="not">Not:</h4>
+<pre><code>   $ tar -czvf test.tgz --exclude=work/intrinsyc/ ~/work     !!! trailing / after intrinsyc
+   $ tar -czvf test.tgz --exclude=~/work/intrinsyc ~/work    !!! ~/ before work</code></pre>
+<p>Use <code>--exclude-from=&lt;files2exclude&gt;</code> or <code>-X &lt;files2exclude&gt;</code> Here <code>&lt;files2exclude&gt;</code> is a text file containing patterns: intrinsyc</p>
+<h4 id="good-example">Good example:</h4>
+<pre><code>$ for i in 0 1 2; do mkdir -p /tmp/data/sub$i; echo foo &gt; /tmp/data/sub$i/foo; done
+$ find /tmp/data
+/tmp/data
+/tmp/data/sub2
+/tmp/data/sub2/foo
+/tmp/data/sub0
+/tmp/data/sub0/foo
+/tmp/data/sub1
+/tmp/data/sub1/foo
+$ tar -czvf /tmp/_data.tgz --exclude=&#39;/tmp/data/sub[1-2]&#39; /tmp/data 
+tar: Removing leading `/&#39; from member names
+/tmp/data/
+/tmp/data/sub0/
+/tmp/data/sub0/foo</code></pre>
+<h2 id="zip-archives">Zip Archives</h2>
+<pre><code>    $ zip -r archive.zip &lt;files&gt;   # create
+    $ unzip -t archive.zip         # test / list
+    $ unzip archive.zip            # extract</code></pre>
+<p>Look into rsync (remote sync)!!!</p>
+<h2 id="vim">VIM</h2>
+<p>Run shell command from inside VIM:</p>
+<pre><code>:!{cmd}
+
+:! By itself, runs the last external command (from your shell history)
+:!! Repeats the last command
+:silent !{cmd} Eliminates the need to hit enter after the command is done
+:r !{cmd} Puts the output of $cmd into the current buffer</code></pre>
+<p>Dot character (<em><code>.</code></em>) means &quot;perform last command again&quot;, so to comment out several lines in Bash script you would comment out one, and then go <code>j.j.j.j.</code></p>
+<p>can use a marker for the first line: <code>ma</code> &quot;where a is any letter then move to the last line and run: <code>:'a,. s/^/#/</code> This works just like running <code>s/^/#/</code> on a visual selection. Here <code>'a</code> designates the mark and <code>.</code> designates current line, separated by a comma (,).</p>
+<h3 id="change-font-from-inside-the-window">Change font from inside the window</h3>
+<p>Check what font is being used first:</p>
+<pre><code>:set guifont?
+guifont=Monospace 8</code></pre>
+<p>Then set it, but make sure to include the slash<br />
+<code>:set guifont=Monospace\ 7.5</code></p>
+<h2 id="bashrc-mods">Bashrc Mods</h2>
+<p>Assigned (,&quot;), (,//), (,#) and (,;) to create comments (pick one depending on your language) when visual block is selected.<br />
+To clear the comments select the visual block again and run <code>,cl</code>. It works for all langs.</p>
+<p>To search available installation packages use <code>apt-cache search</code>, for instance to search for &quot;nvidia settins&quot; type: $ apt-cache search nvidia settings The output is: nvidia-settings - Werkzeug für die Konfiguration des NVIDIA-Grafiktreibers nvidia-settings-updates - Tool of configuring the NVIDIA graphics driver To find the binary related to the package &quot;nvidia-settings&quot; run: $ dpkg -L nvidia-settins | grep bin The output is: /usr/bin /usr/lib/nvidia-settings/bin /usr/lib/nvidia-settings/bin/nvidia-settings</p>
+<p>Use tee command to send standard output to the screen and to the file sumultaneously (fork): $ make | tee build.log $ make install | tee -a build.log</p>
+<p>Fill standard input with always the same string: $ yes <string> | <command> # <string> is y by default examples: $ yes | rm -r dir/ bank&gt; yes no | credit_applicant $ yes &quot;&quot; | make oldconfig # equivalent to hitting &quot;Enter&quot; to accept all default settings</p>
+<h4 id="view-installed-packages">View installed packages:</h4>
+<pre><code>$ apt list --installed | grep -i mesa</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>Compressor</th>
+<th>Job Time</th>
+<th>Time with System Waiting</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>gz:</td>
+<td>2.412s</td>
+<td>74,155,976</td>
+</tr>
+<tr class="even">
+<td>bz2:</td>
+<td>10.304s</td>
+<td>73,710,049</td>
+</tr>
+<tr class="odd">
+<td>xz:</td>
+<td>25.109s</td>
+<td>68,475,888</td>
+</tr>
+<tr class="even">
+<td>lzma:</td>
+<td>25.752s</td>
+<td>68.475,888</td>
+</tr>
+</tbody>
+</table>
+<p>To search for files with certain permission:</p>
+<pre><code>    $ find /path/to/file -user user1 -perm -u+rwx</code></pre>
+<p>Or using grep to extract all files with superuser bit set:</p>
+<pre><code>    $ ls /usr/bin | grep &#39;^...s&#39;</code></pre>
+<p>We can use this grep filter to print only the file names:</p>
+<pre><code>    $ ls /usr/bin | grep &#39;^...s&#39; | awk &#39;{ print $9 }&#39;</code></pre>
+<h4 id="makefiles">Makefiles</h4>
+<p>Each variable in the Makefile can be overridden from command line. When SRCS</p>
+<p>To fix missing dependencies issue run: apt --fix-broken install</p>
+<h4 id="configure-git-to-properly-handle-line-endings-avoid-m-endings">Configure git to properly handle line endings (avoid ^M endings):</h4>
+<pre><code>    $ git config --global core.autocrlf input</code></pre>
+<h4 id="error-installing-gvim-after-building-it-from-source">Error installing gvim after building it from source:</h4>
+<pre><code>    $ sudo checkinstall
+    dpkg: error processing archive /blah/blah/vim_ddd.dev
+    trying to overwrite &#39;/usr/bin/xxd&#39;
+    dpkg-dev: error: subprocess paste was killed by signal (Broken pipe)
+    Errors were encountered while processing:
+    /home/bombadil/tmp/vim/vim_20170611-1_amd64.deb</code></pre>
+<h4 id="fix-it-with-this-command">Fix it with this command:</h4>
+<pre><code>`$ sudo dpkg -i --force-overwrite /home/bombadil/tmp/vim/vim_20170611-1_amd64.deb`</code></pre>
+<p>Then check with <code>$ sudo apt-get -f install</code> And reinstall: <code>$ sudo checkinstall</code> May be able to install simply with: <code>$ sudo apt install -f  # haven't tried it</code> Can remove the package again with: <code>$ dpkg -r vim</code></p>
+<p>When having problems with Windows endings in a file ( ^M ) open file with vim and run: <code>:set fileformat=unix</code> Also can use <code>dos2unix -n fileName newFileName</code></p>
+<h2 id="apt-commands">Apt Commands</h2>
+<ul>
+<li>Search for a package: <code>apt-cache search mesa | grep OpenGL</code></li>
+<li>View detailed package info: <code>apt-cache show [package name]</code></li>
+<li>Get info on OpenGL version: <code>glxinfo | grep &quot;version&quot;</code></li>
+<li>View version info of any package: <code>dpkg -s [package name]</code> <code>dpkg -s libglu1-mesa</code></li>
+<li>View package dependencies: <code>dpkg -S [package name]</code></li>
+</ul>
+<h2 id="linux-libraries">Linux Libraries</h2>
+<p>Headers are located in <code>/usr/include</code> Check out <code>/usr/include/SDL2</code>, <code>/usr/include/GL</code></p>
+<p>Dynamic libraries can be found in <code>/usr/lib/x86_64-linux-gnu</code> - <em>.a corresponds to archive libraries, which are statically linked with -c flag - </em>.so extensions indicate shared object libraries, which are linked dynamically</p>
+<p>Look at:</p>
+<pre><code>    /usr/lib/x86.../libGLU.a
+                    libGLU.so
+                    libglut.so
+                    libGL.so</code></pre>
+<p>Compiling and linking can be done this way when <code>#including &lt;GL/gl.h&gt;</code> and <code>&lt;SDL2/SDL.h&gt;</code>:</p>
+<pre><code>$ gcc -Wall -Wextra -pedantic -c sdlGL.c -o sdlGL.o
+$ gcc sdlGL.o -o sdlGLtest1 `sdl-config --libs --cflags` -lm -lGL -lSDL2
+$ ls
+sdlGL.c  sdlGL.o  sdlGLtest1</code></pre>
+<h2 id="git">GIT</h2>
+<h3 id="merge-commits-squash">Merge Commits (Squash)</h3>
+<p>Rebase interactive (<code>rebase -i</code>) can be used to combine several commits into one. Check out a tutorial <a href="http://gitready.com/advanced/2009/02/10/squashing-commits-with-rebase.html" title="tutorial">here</a>. <em>It should only be done when noone else has pulled pulled the old commits from the repo!</em> - Say you have several minor commits like this: <img src="/home/bombadil/work/linuxTraining/screenshots/gitLog1.png" title="Log Before" alt="Log1" /></p>
+<ul>
+<li><p>To combine four commits into one we could run:</p>
+<pre><code>$ git rebase -i HEAD~4</code></pre></li>
+<li><p>This will open vim window asking to select which commits to squash and which to pick. <em>Make sure that vim is configured as the git editor, otherwise it'll tell you it can't save!</em>:</p>
+<pre><code>$ git config --global core.editor &quot;gvim -f&quot;</code></pre></li>
+<li>Now it will open another vim window asking if you want to change the message for this combined commit. Change, save and close.</li>
+<li><p>If the commits you squashed were already pushed to the repo (but you're sure noone pulled!) you need to merge them:</p></li>
+</ul>
+<div class="figure">
+<img src="/home/bombadil/work/linuxTraining/screenshots/gitLog2.png" title="Log with Conflict" alt="Log2" />
+<p class="caption">Log2</p>
+</div>
+<pre><code>    $ git pull
+    Auto-merging lin_commands_notes.md
+    CONFLICT (content): Merge conflict in lin_commands_notes.md
+    Automatic merge failed; fix conflicts and then commit the result.
+
+    $ gvim lin_commands_notes.md
+    $ git add lin_commands_notes.md
+    $ git commit -m &quot;Resolve conflict with github&quot;
+    [master b2bf5ab] Resolve conflict with github</code></pre>
+<div class="figure">
+<img src="/home/bombadil/work/linuxTraining/screenshots/gitLog3.png" title="Final Log" alt="Log3" />
+<p class="caption">Log3</p>
+</div>
+<pre><code>    $ git push origin master</code></pre>
+<h2 id="markdown-.md">Markdown .md</h2>
+<p>A very nice page for it <a href="https://kevin.deldycke.com/2012/01/how-to-generate-pdf-markdown/" title="here">markdownConverters</a> - pandoc - easy, light, intuitive. Requires additional package (texlive) to print to pdf</p>
+<pre><code>    $ pandoc README.md -o readme-pandoc.pdf</code></pre>
+<ul>
+<li><p>gimli - written in ruby. relies on wkhtmltopdf.</p>
+<pre><code>$ sudo gem install gimli
+$ gimli -f README.md</code></pre></li>
+</ul>

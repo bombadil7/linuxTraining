@@ -1,0 +1,8 @@
+*.tgz
+*.tar.gz
+*.tar.xz
+kernel/modules/*
+kernel/src/*
+Apress.Pro.Bash.Programming.Scripting*
+*understanding_linux_network_internals.pdf
+*petazzoni-device-tree-dummies.pdf
